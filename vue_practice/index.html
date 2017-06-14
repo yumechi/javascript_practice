@@ -9,10 +9,37 @@
 </head>
 <body>
 
-<div id="app" class="container">
+<div id="page_header" class="alert alert-dismissible alert-info">
+    <h1>{{ message }}</h1>
+</div>
+
+<div id="page_content">
+    <div>
+        
+    </div>
+    <a class="btn btn-primary btn-lg" @click="clicked_button()">Click me!</a>
 </div>
 
 <script type="text/javascript">
+    var app = new Vue({
+        el: "#page_header",
+        data: {
+            message: "Hello World!"
+        }
+    });
+
+    var app2 = new Vue({
+        el: "#page_content",
+        methods: {
+            clicked_button: function() {
+                if(confirm("実行しますか？")) {
+                    alert("hai");
+                } else {
+                    alert("いいえ");
+                }
+            }
+        }
+    });
 </script>
 
 </body>
