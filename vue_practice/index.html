@@ -14,29 +14,37 @@
 </div>
 
 <div id="page_content">
-    <div>
-        
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2>変換前のCSVデータ（カンマ区切り）</h2>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <textarea id="csv_data" rows="5" placeholder="SQLに変換したいCSVデータをココに入れる"></textarea>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-primary btn-lg" @click="convert">変換！</a>
+            </div>
+        </div>
     </div>
-    <a class="btn btn-primary btn-lg" @click="clicked_button()">Click me!</a>
 </div>
 
 <script type="text/javascript">
     var app = new Vue({
         el: "#page_header",
         data: {
-            message: "Hello World!"
+            message: "CSVデータからSQLのINSERT文を自動的につくる"
         }
     });
 
     var app2 = new Vue({
         el: "#page_content",
         methods: {
-            clicked_button: function() {
-                if(confirm("実行しますか？")) {
-                    alert("hai");
-                } else {
-                    alert("いいえ");
-                }
+            convert: function() {
+                // textareaから文字列を取ってきてうまいこと
+                // そういえばテーブル名を設定する場所がない
+                // 明日以降にやる
+                alert("変換完了！");
             }
         }
     });
