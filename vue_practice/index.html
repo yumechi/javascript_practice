@@ -27,7 +27,21 @@
             </div>
         </div>
     </div>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h2>変換結果</h2>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <textarea class="form-control" id="result_data" rows="5" placeholder="">{{ result }}</textarea>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-success btn-lg" @click="copy_clipboard">クリップボードにコピー</a>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <script type="text/javascript">
     var app = new Vue({
@@ -39,12 +53,54 @@
 
     var app2 = new Vue({
         el: "#page_content",
+        data: {
+            result: ""
+        },
         methods: {
             convert: function() {
                 // textareaから文字列を取ってきてうまいこと
                 // そういえばテーブル名を設定する場所がない
                 // 明日以降にやる
-                alert("変換完了！");
+                var text = $("#csv_data").val()
+                var data = text.split("\n")
+                var separetor = ","
+                var createType = "insert"
+                var table_name = "table_name"
+                
+                var header = ""
+                var output = ""
+                for(var i = 0; i < data.length; i++) {
+                    if(i == 0) {
+                        // header設定
+                        header = data[i].split(separetor);
+                    } else {
+                        // content取得と出力作成
+                        var elem = data[i].split(separetor);
+                        output += createSQL(elem);
+                    }
+                }
+                alert("変換完了！")
+                this.result = output
+
+                function createSQL(elem) {
+                    if(createType == "insert") {
+                        return insertSQL(elem);
+                    } else {
+                        alert("未実装です");
+                        return;
+                    }
+
+                    function insertSQL(elem) {
+                        return "INSERT INTO " + table_name + "(" + header.join(",") + ") VALUES(" + elem.join(",") + "\n";
+                    }
+                }
+            },
+           
+            copy_clipboard: function() {
+                $("#result_data").select()
+                document.execCommand('copy')
+                $("#result_data").blur();
+                alert("クリップボードにコピーしました")
             }
         }
     });
