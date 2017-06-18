@@ -76,18 +76,35 @@
                     } else {
                         // content取得と出力作成
                         var elem = data[i].split(separetor);
-                        output += createSQL(elem);
+                        var sql_result = createSQL(elem);
+                        if(sql_result[0] == 0) {
+                            output += sql_result[1]
+                        } else {
+                            // とりあえず今のところは続行で
+                            /*
+                            alert(sql_result[1])
+                            this.result = ""
+                            return
+                            */ 
+                        }
                     }
                 }
                 alert("変換完了！")
                 this.result = output.trim()
 
                 function createSQL(elem) {
+                    if(header.length != elem.length) {
+                        // TODO: ココでエラー処理
+                        console.log("SKIP")
+                        console.log(elem)
+                        return [-1, "引数エラー"];
+                    }
+
+                    // TODO: 他の基本的なSQL文作成もしたい
                     if(createType == "insert") {
-                        return insertSQL(elem);
+                        return [0, insertSQL(elem)];
                     } else {
-                        alert("未実装です");
-                        return;
+                        return [-2, "未定義メソッドエラー"];
                     }
 
                     function insertSQL(elem) {
