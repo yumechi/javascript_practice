@@ -8,6 +8,6 @@ JavaScriptのれんしゅー フレームワークとか試すぞーー
 CSVからinsert文を自動生成するだけのページ作ってみました。
 今とりあえずindex.htmlに書いてるけど、そのうち分割します…
 
-https://yumechi.github.io/javascript_practice/vue_practice/index.html
+https://yumechi.github.io/javascript_practice/vue_practice/SQL_Creator.html
 
 
