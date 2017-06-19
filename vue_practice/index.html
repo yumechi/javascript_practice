@@ -9,40 +9,59 @@
 </head>
 <body>
 
-<div id="page_header" class="alert alert-dismissible alert-info">
-    <h1>{{ message }}</h1>
+<div id="page_header">
+    <div class="container">
+        <div class="alert alert-dismissible alert-info">
+            <h1 class="display-3">{{ message }}</h1>
+            <p class="lead">使用例：上のテキストエリアに下記のCSVを貼ってみてください</p>
+            <pre>管理番号,メールアドレス,日付
+1,"yumechi0525+mail1@users.noreply.github.com.com","2017-06-01"
+2,"yumechi0525+mail2@users.noreply.github.com.com","2017-06-02"
+3,"yumechi0525+mail3@users.noreply.github.com.com","2017-06-03"
+4,"yumechi0525+mail4@users.noreply.github.com.com","2017-06-04"
+5,"yumechi0525+mail5@users.noreply.github.com.com","2017-06-05"
+6,"yumechi0525+mail6@users.noreply.github.com.com","2017-06-06"
+7,"yumechi0525+mail7@users.noreply.github.com.com","2017-06-07"
+8,"yumechi0525+mail8@users.noreply.github.com.com","2017-06-08"</pre>
+        </div>
+    </div>
 </div>
 
 <div id="page_content">
-    <div class="panel panel-primary">
+  <div class="panel panel-primary">
         <div class="panel-heading">
             <h2>変換前のCSVデータ（カンマ区切り）</h2>
         </div>
         <div class="panel-body">
             <div class="form-group">
+                <div class="form-inline">
+                    <span class="lead">テーブル名</span>
+                    <input class="form-control input-lg" type="text" value="table_name" id="table_name">
+                </div>
+            </div>
+            <div class="form-group">
                 <textarea class="form-control" id="csv_data" rows="5" placeholder="SQLに変換したいCSVデータをココに入れる"></textarea>
             </div>
             <div class="form-group">
-                <a class="btn btn-primary btn-lg" @click="convert">変換！</a>
+                <a class="btn btn-primary btn-lg" id="convert_button" @click="convert">変換！</a>
             </div>
         </div>
     </div>
-    <div class="panel panel-success">
+    <div class="panel" :class="result_panel_label">
         <div class="panel-heading">
-            <h2>変換結果</h2>
+          <h2>変換結果</h2>
         </div>
         <div class="panel-body">
             <div class="form-group">
                 <textarea class="form-control" id="result_data" rows="5" placeholder="">{{ result }}</textarea>
             </div>
             <div class="form-group">
-                <a class="btn btn-success btn-lg" @click="copy_clipboard">クリップボードにコピー</a>
+                <a class="btn btn-lg" :class="result_button_class" id="clip_board_button" @click="copy_clipboard">クリップボードにコピー</a>
             </div>
         </div>
     </div>
 </div>
-
-
+  
 <script type="text/javascript">
     var app = new Vue({
         el: "#page_header",
@@ -54,18 +73,17 @@
     var app2 = new Vue({
         el: "#page_content",
         data: {
-            result: ""
+          result: "",
+          result_panel_label: "panel-success",
+          result_button_class: "btn-primary disabled"
         },
         methods: {
             convert: function() {
-                // textareaから文字列を取ってきてうまいこと
-                // そういえばテーブル名を設定する場所がない
-                // 明日以降にやる
                 var text = $("#csv_data").val()
                 var data = text.split("\n")
                 var separetor = ","
                 var createType = "insert"
-                var table_name = "table_name"
+                var table_name = $("#table_name").val()
                 
                 var header = ""
                 var output = ""
@@ -79,7 +97,14 @@
                         var sql_result = createSQL(elem);
                         if(sql_result[0] == 0) {
                             output += sql_result[1]
+                            this.result_panel_label = "panel-success"
+                            this.result_button_class = "btn-success"
                         } else {
+                            if(sql_result[0] == -1) {
+                              // TODO: ここにきたらエラーリストを出したい
+                              this.result_panel_label = "panel-warning"
+                              this.result_button_class = "btn-warning"
+                            }
                             // とりあえず今のところは続行で
                             /*
                             alert(sql_result[1])
@@ -125,3 +150,4 @@
 
 </body>
 </html>
+
