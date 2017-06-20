@@ -37,7 +37,14 @@
                 <div class="form-inline">
                     <label>テーブル名</label>
                     <input class="form-control" type="text" value="table_name" id="table_name">
-                </div>
+                    <label>出力タイプ</label>
+                    <select class="form-control" id="create_type" v-model="create_type">
+                        <option value="select">select</option>
+                        <option value="update">update</option>
+                        <option value="insert">insert</option>
+                        <option value="delete">delete（未実装）</option>
+                    </select>
+               </div>
             </div>
             <div class="form-group">
                 <textarea class="form-control" id="csv_data" rows="5" placeholder="SQLに変換したいCSVデータをココに入れる"></textarea>
@@ -73,49 +80,72 @@
     var app2 = new Vue({
         el: "#page_content",
         data: {
+          create_type: "insert",
           result: "",
           result_panel_label: "panel-success",
-          result_button_class: "btn-primary disabled"
+          result_button_class: "btn-primary disabled",
         },
         methods: {
             convert: function() {
                 var text = $("#csv_data").val()
                 var data = text.split("\n")
                 var separetor = ","
-                var createType = "insert"
+                var createType = this.create_type
                 var table_name = $("#table_name").val()
                 
                 var header = ""
                 var output = ""
+                var isWarning = false
+                var isError = false
+                var errorMessage = ""
                 for(var i = 0; i < data.length; i++) {
                     if(i == 0) {
                         // header設定
                         header = data[i].split(separetor);
+
+                        // selectの場合はheader出すだけ
+                        // にしてあるけど、条件式にしたほうが良い？？
+                        if(createType == "select") {
+                            var sql_result = createSQL(header);
+                            output += sql_result[1]
+                            this.result_panel_label = "panel-success"
+                            this.result_button_class = "btn-success"
+                            break                          
+                        }
                     } else {
                         // content取得と出力作成
                         var elem = data[i].split(separetor);
                         var sql_result = createSQL(elem);
-                        if(sql_result[0] == 0) {
+                        if(sql_result[0] === 0) {
                             output += sql_result[1]
-                            this.result_panel_label = "panel-success"
-                            this.result_button_class = "btn-success"
+                        } else if(sql_result[0] === -1) {
+                            isWarning = true
                         } else {
-                            if(sql_result[0] == -1) {
-                              // TODO: ここにきたらエラーリストを出したい
-                              this.result_panel_label = "panel-warning"
-                              this.result_button_class = "btn-warning"
-                            }
-                            // とりあえず今のところは続行で
-                            /*
-                            alert(sql_result[1])
-                            this.result = ""
-                            return
-                            */ 
+                            isError = true
+                            errorMessage = sql_result[1]
+                            break
                         }
                     }
                 }
-                alert("変換完了！")
-                this.result = output.trim()
+
+                if(isError) {
+                    this.result_panel_label = "panel-danger"
+                    this.result_button_class = "btn-danger disabled"
+                    alert(errorMessage)
+                    this.result = ""
+                    return
+                } else {
+                    if(isWarning) {
+                        this.result_panel_label = "panel-warning"
+                        this.result_button_class = "btn-warning"
+                    } else {
+                        this.result_panel_label = "panel-success"
+                        this.result_button_class = "btn-success"
+                    }
+        
+                    alert("変換完了！")
+                    this.result = output.trim()
+                }
 
                 function createSQL(elem) {
                     if(header.length != elem.length) {
@@ -125,9 +155,12 @@
                         return [-1, "引数エラー"];
                     }
 
-                    // TODO: 他の基本的なSQL文作成もしたい
                     if(createType == "insert") {
                         return [0, insertSQL(elem)];
+                    } else if(createType == "update") {
+                        return [0, updateSQL(elem)];
+                    } else if(createType == "select") {
+                        return [0, selectSQL()];
                     } else {
                         return [-2, "未定義メソッドエラー"];
                     }
@@ -135,7 +168,14 @@
                     function insertSQL(elem) {
                         return "INSERT INTO " + table_name + "(" + header.join(",") + ") VALUES(" + elem.join(",") + ")\n";
                     }
-                }
+                    function updateSQL(elem) {
+                        // TODO: 作りかけ
+                        return "UPDATE " + table_name + " something... \n";
+                    }
+                    function selectSQL() {
+                        return "SELECT " + header.join(",") + " FROM " + table_name + "\n";
+                    }
+                 }
             },
            
             copy_clipboard: function() {
