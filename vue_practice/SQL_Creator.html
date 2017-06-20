@@ -31,6 +31,7 @@
   <div class="panel panel-primary">
         <div class="panel-heading">
             <h2>変換前のCSVデータ（カンマ区切り）</h2>
+            <p class="lead">insert以外は実装中です…</p>
         </div>
         <div class="panel-body">
             <div class="form-group">
@@ -39,8 +40,8 @@
                     <input class="form-control" type="text" value="table_name" id="table_name">
                     <label>出力タイプ</label>
                     <select class="form-control" id="create_type" v-model="create_type">
-                        <option value="select">select</option>
-                        <option value="update">update</option>
+                        <option value="select">select（仕様固まってない）</option>
+                        <option value="update">update（仕様固まってない）</option>
                         <option value="insert">insert</option>
                         <option value="delete">delete（未実装）</option>
                     </select>
