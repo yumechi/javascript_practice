@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "MY_FIRST_EXTENSION",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "IT IS PRACTICE EXTENSION.",
+    "description": "The description of the application"
+  }
+}
