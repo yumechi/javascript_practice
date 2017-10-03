@@ -21,6 +21,8 @@
               "https://*.slack.com/customize/emoji"
           ],
           "js": [
+              "bower_components/jszip/dist/jszip.min.js",
+              "bower_components/file-saver/FileSaver.min.js",
               "bower_components/jquery/dist/jquery.min.js",
               "scripts/contentscript.js"
           ]
