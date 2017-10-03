@@ -5,5 +5,10 @@ $(function () {
 });
 
 $(document).on('click', '#slack_emoji_dl', function () {
-    alert('へろー、ゆめち');
+    $('html').html().split('\n').some(function(val, index) {
+        if(!val.match(/data-original=\".*?\"/)) {
+            return false;
+        }
+        console.log(val);
+    });
 });
