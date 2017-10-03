@@ -14,7 +14,9 @@
       "scripts/background.js"
     ]
   },
-  "permissions": [],
+  "permissions": [
+    "https://emoji.slack-edge.com/"
+  ],
   "content_scripts": [
       {
           "matches": [
