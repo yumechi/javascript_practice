@@ -4,7 +4,7 @@ var deferreds;
 var zip;
 
 $(function () {
-    $('h4:last').after('<input type="button" id="slack_emoji_dl" class="btn btn_primary" value="Save all emoji">');
+    $('h4:last').after('<input type="button" id="slack_emoji_dl" class="btn btn-info" value="Save all emoji" style="background-color:#248">');
 });
 
 $(document).on('click', '#slack_emoji_dl', function () {
