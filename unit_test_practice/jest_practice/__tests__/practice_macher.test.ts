@@ -24,4 +24,28 @@ test('[ts] adding positive numbers is not zero', () => {
     }
 });
 
-// 続きは真偽値（およびそれらしく思える値）から
+test('[ts] null check', () => {
+    let n: null = null;
+    // null のみに一致
+    expect(n).toBeNull();
+    // undefined のみ一致
+    expect(n).toBeDefined();
+    // undefined でないとき一致、notが入るので今回は一致する
+    expect(n).not.toBeUndefined();
+    // if文がtrueのとき一致、notが入るので今回は一致する
+    expect(n).not.toBeTruthy();
+    // if文がfalseのとき一致
+    expect(n).toBeFalsy();
+});
+
+test('[ts] three plus five', () => {
+    let value: number = 3 + 5;
+    expect(value).toBeGreaterThan(6);
+    expect(value).toBeGreaterThanOrEqual(7.7);
+    expect(value).toBeLessThan(9);
+    expect(value).toBeLessThanOrEqual(8.2);
+
+    // equals
+    expect(value).toBe(8);
+    expect(value).toEqual(8);
+});
