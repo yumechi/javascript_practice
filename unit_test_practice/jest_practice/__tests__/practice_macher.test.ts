@@ -18,14 +18,14 @@ test('[ts] object assignment', () => {
 test('[ts] adding positive numbers is not zero', () => {
     // not.toBeは一致しないことを確認可能
     var sum: number = 0;
-    for(let add_num = 1: number;  add_num < 10; add_num++) {
+    for(const add_num = 1: number;  add_num < 10; add_num++) {
         sum += add_num;
         expect(sum).not.toBe(0);
     }
 });
 
 test('[ts] null check', () => {
-    let n: null = null;
+    const n: null = null;
     // null のみに一致
     expect(n).toBeNull();
     // undefined のみ一致
@@ -39,7 +39,7 @@ test('[ts] null check', () => {
 });
 
 test('[ts] three plus five', () => {
-    let value: number = 3 + 5;
+    const value: number = 3 + 5;
     expect(value).toBeGreaterThan(6);
     expect(value).toBeGreaterThanOrEqual(7.7);
     expect(value).toBeLessThan(9);
