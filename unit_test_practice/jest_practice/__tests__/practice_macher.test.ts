@@ -49,3 +49,15 @@ test('[ts] three plus five', () => {
     expect(value).toBe(8);
     expect(value).toEqual(8);
 });
+
+// 丸め誤差にテストを依存させない
+// 浮動小数点は toBeCloseTo を使うと良い
+test('[ts] add floating point numbers.', () => {
+    const v = 1.4 + 1.23;
+    expect(v).toBeCloseTo(2.63);
+    // 当然、一致しない
+    // expect(v).toBeCloseTo(2.64);
+    expect(v).not.toBeCloseTo(2.64);
+});
+
+
