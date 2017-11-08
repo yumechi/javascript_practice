@@ -60,4 +60,25 @@ test('[ts] add floating point numbers.', () => {
     expect(v).not.toBeCloseTo(2.64);
 });
 
+// 文字列のマッチング
+test('[ts] there is no I in baseball', () => {
+    expect('baseball').not.toMatch(/I/);
+});
+test('[ts] there is k in takoyaki', () => {
+    expect('takoyaki').toMatch(/k/);
+});
+test('[ts] but there is a "rm" in starmine', () => {
+    expect('starmine').toMatch(/rm/);
+});
+
+// 配列は toContain を使用して調べる
+const sportList = [
+    'baseball',
+    'soccer',
+    'basketball',
+    'archery'
+];
+test('[ts] the sport list has soccer on it', () => {
+    expect(sportList).toContain('soccer');
+});
 
