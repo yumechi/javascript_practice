@@ -82,3 +82,29 @@ test('[ts] the sport list has soccer on it', () => {
     expect(sportList).toContain('soccer');
 });
 
+// 例外の検査は toThrow
+// 独自のエラー定義
+// refer: https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Error
+function ConfigError(message) {
+    this.message = message;
+    var last_part = new Error().stack.match(/[^\s]+$/);
+    this.stack = `${this.name} at ${last_part}`;
+}
+Object.setPrototypeOf(ConfigError, Error);
+ConfigError.prototype = Object.create(Error.prototype);
+ConfigError.prototype.name = "ConfigError";
+ConfigError.prototype.message = "";
+ConfigError.prototype.constructor = ConfigError;
+
+// 例外を投げるメソッド
+function compileYumechiCode() {
+    throw new ConfigError('dame dame yumechi SDK');
+}
+
+test('[ts] compiling damedame as expect', () => {
+    expect(compileYumechiCode).toThrow();
+    expect(compileYumechiCode).toThrow(ConfigError);
+
+    expect(compileYumechiCode).toThrow('dame dame yumechi SDK');
+    expect(compileYumechiCode).toThrow(/SDK/);
+});
