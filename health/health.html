@@ -10,12 +10,13 @@
 <body>
     <canvas id="myChart"></canvas>
     <script>
-        /*
-        fetch('./weight.tsv', {
-            mode: 'cros'
-        }).then((response) => {
-            return response.text();
-        }).then((text) => {
+        loadchart = async () => {
+            var text = await (await fetch("./weight.tsv")
+                .then(handler)
+                .catch(error)
+            ).text();
+            console.log(text);
+
             dates = []
             weights = []
             text.split('\n').forEach((v, i) => {
@@ -25,7 +26,7 @@
                 weights.push(elem[1]);
             });
             _loadchart(dates, weights);
-        });
+        }
 
         function _loadchart(dates, weights) {
             var ctx = document.getElementById('myChart').getContext('2d');
@@ -48,15 +49,6 @@
 
             });
         }
-        */
-
-        getConfig = async () => {
-            var conf1 = await (await fetch("./weight.tsv")
-                .then(handler)
-                .catch(error)
-            ).text();
-            console.log(conf1);
-        }
 
         function handler(response) {
             if (!response.ok) {
@@ -70,7 +62,7 @@
         }
 
         window.onload = function () {
-            getConfig();
+            loadchart();
         }
     </script>
 </body>
