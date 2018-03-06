@@ -19,7 +19,7 @@
             dates = []
             weights = []
             text.split('\n').forEach((v, i) => {
-                if(i == 0) return; // header pass
+                if (i == 0) return; // header pass
                 elem = v.split('\t')
                 dates.push(elem[0]);
                 weights.push(elem[1]);
@@ -41,12 +41,20 @@
                     }]
                 },
                 options: {
+                    responsive: true,
                     title: {
                         display: true,
                         text: '最近の体重…'
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                min: 50,
+                                max: 100
+                            }
+                        }]
                     }
                 }
-
             });
         }
 
