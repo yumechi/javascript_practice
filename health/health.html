@@ -15,7 +15,6 @@
                 .then(handler)
                 .catch(error)
             ).text();
-            console.log(text);
 
             dates = []
             weights = []
@@ -29,6 +28,7 @@
         }
 
         function _loadchart(dates, weights) {
+            console.log(dates, weights);
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'line',
