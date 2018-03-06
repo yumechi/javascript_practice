@@ -1,29 +1,30 @@
-<html>
+<!DOCTYPE HTML>
+<html lang="ja">
 
 <head>
     <title>最近やびゃーやつ</title>
+    <meta charset="utf-8"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 </head>
 
 <body>
     <canvas id="myChart"></canvas>
     <script>
-        loadchart = async() => {
-            var text = await(await fetch('./weight.tsv', {
-                mode: 'cros'
-            }).then(response).catch(error)
-            ).text();
-        
+        fetch('./weight.tsv', {
+            mode: 'cros'
+        }).then((response) => {
+            return response.text();
+        }).then((text) => {
             dates = []
             weights = []
-            await( await text.split('\n').forEach((v, i) => {
+            text.split('\n').forEach((v, i) => {
                 // if(i == 0) return; // header pass
                 elem = v.split('\t')
                 dates.push(elem[0]);
                 weights.push(elem[1]);
-            }));
+            });
             _loadchart(dates, weights);
-        }
+        });
 
         function _loadchart(dates, weights) {
             var ctx = document.getElementById('myChart').getContext('2d');
@@ -45,10 +46,6 @@
                 }
 
             });
-        }
-
-        window.onload = () => {
-            loadchart();
         }
     </script>
 </body>
