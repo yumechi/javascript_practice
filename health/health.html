@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <title>最近やびゃーやつ</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+</head>
+
+<body>
+    <canvas id="myChart"></canvas>
+    <script>
+        loadchart = async() => {
+            var text = await(await fetch('./weight.tsv', {
+                mode: 'cros'
+            }).then(response).catch(error)
+            ).text();
+        
+            dates = []
+            weights = []
+            await( await text.split('\n').forEach((v, i) => {
+                // if(i == 0) return; // header pass
+                elem = v.split('\t')
+                dates.push(elem[0]);
+                weights.push(elem[1]);
+            }));
+            _loadchart(dates, weights);
+        }
+
+        function _loadchart(dates, weights) {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["2018-03", "2018-04", "2018-05", "2018-06", "2018-07"],
+                    datasets: [{
+                        label: 'weight',
+                        data: weights,
+                        backgroundColor: "#3498db"
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: '最近の体重…'
+                    }
+                }
+
+            });
+        }
+
+        window.onload = () => {
+            loadchart();
+        }
+    </script>
+</body>
+
+</html>
