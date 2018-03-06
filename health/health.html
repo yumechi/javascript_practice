@@ -3,13 +3,14 @@
 
 <head>
     <title>最近やびゃーやつ</title>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 </head>
 
 <body>
     <canvas id="myChart"></canvas>
     <script>
+        /*
         fetch('./weight.tsv', {
             mode: 'cros'
         }).then((response) => {
@@ -46,6 +47,30 @@
                 }
 
             });
+        }
+        */
+
+        getConfig = async () => {
+            var conf1 = await (await fetch("./weight.tsv")
+                .then(handler)
+                .catch(error)
+            ).text();
+            console.log(conf1);
+        }
+
+        function handler(response) {
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
+            return response;
+        }
+
+        function error(e) {
+            console.log(e);
+        }
+
+        window.onload = function () {
+            getConfig();
         }
     </script>
 </body>
