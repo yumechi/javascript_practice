@@ -4,7 +4,7 @@
     },
     "devDependencies": {
         "@types/jest": "^21.1.10",
-        "ts-jest": "^21.2.4",
+        "ts-jest": "^24.2.0",
         "typescript": "^2.9.2"
     },
     "name": "jest_practice",
@@ -14,8 +14,8 @@
         "test": "test"
     },
     "dependencies": {
-        "@types/node": "^8.10.49",
-        "jest": "^24.8.0"
+        "@types/node": "^8.10.59",
+        "jest": "^24.9.0"
     },
     "keywords": [],
     "author": "",
