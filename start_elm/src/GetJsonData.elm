@@ -5,7 +5,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http
-import Json.Decode exposing (Decoder, field, string)
+import Json.Decode exposing (Decoder, field, map2, string)
 
 
 
@@ -24,7 +24,13 @@ main =
 type Model
     = Failure
     | Loading
-    | Success String
+    | Success CatImage
+
+
+type alias CatImage =
+    { title : String
+    , url : String
+    }
 
 
 init : () -> ( Model, Cmd Msg )
@@ -38,7 +44,7 @@ init _ =
 
 type Msg
     = MorePlease
-    | GotGif (Result Http.Error String)
+    | GotGif (Result Http.Error CatImage)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -49,8 +55,8 @@ update msg model =
 
         GotGif result ->
             case result of
-                Ok url ->
-                    ( Success url, Cmd.none )
+                Ok catimage ->
+                    ( Success catimage, Cmd.none )
 
                 Err _ ->
                     ( Failure, Cmd.none )
@@ -89,10 +95,12 @@ viewGif model =
         Loading ->
             text "Loading ..."
 
-        Success url ->
+        Success catimage ->
             div []
                 [ button [ onClick MorePlease, style "display" "block" ] [ text "More Please!" ]
-                , img [ src url ] []
+                , h3 [] [ text catimage.title ]
+                , h4 [] [ text catimage.url ]
+                , img [ src catimage.url ] []
                 ]
 
 
@@ -108,6 +116,8 @@ getRandomCatGif =
         }
 
 
-gifDecoder : Decoder String
+gifDecoder : Decoder CatImage
 gifDecoder =
-    field "data" (field "image_url" string)
+    map2 CatImage
+        (field "data" (field "title" string))
+        (field "data" (field "image_url" string))
