@@ -7,6 +7,11 @@ import Random
 
 
 
+-- todo: 画像での表示
+-- todo: elm/svgを使った表示
+-- todo: Random.weighted を使った偏ったサイコロ
+-- todo: 2つ目のサイコロを作って同時に振る
+-- todo: サイコロの目が決まるまでランダムにサイコロの目が変わるようなアニメーションを付ける
 -- MAIN
 
 
