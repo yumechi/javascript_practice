@@ -1,6 +1,24 @@
 {
   "compilerOptions": {
+    "target": "ES2022",
     "module": "commonjs",
-    "jsx": "react"
-  }
+    "lib": ["ES2022"],
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./",
+    "types": ["jest", "node"]
+  },
+  "include": [
+    "script/**/*",
+    "__tests__/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

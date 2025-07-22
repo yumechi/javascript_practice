@@ -17,8 +17,8 @@ test('[ts] object assignment', () => {
 
 test('[ts] adding positive numbers is not zero', () => {
     // not.toBeは一致しないことを確認可能
-    var sum: number = 0;
-    for(const add_num = 1: number;  add_num < 10; add_num++) {
+    let sum: number = 0;
+    for(let add_num: number = 1; add_num < 10; add_num++) {
         sum += add_num;
         expect(sum).not.toBe(0);
     }
@@ -85,19 +85,16 @@ test('[ts] the sport list has soccer on it', () => {
 // 例外の検査は toThrow
 // 独自のエラー定義
 // refer: https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Error
-function ConfigError(message) {
-    this.message = message;
-    var last_part = new Error().stack.match(/[^\s]+$/);
-    this.stack = `${this.name} at ${last_part}`;
+class ConfigError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = 'ConfigError';
+        this.message = message;
+    }
 }
-Object.setPrototypeOf(ConfigError, Error);
-ConfigError.prototype = Object.create(Error.prototype);
-ConfigError.prototype.name = "ConfigError";
-ConfigError.prototype.message = "";
-ConfigError.prototype.constructor = ConfigError;
 
 // 例外を投げるメソッド
-function compileYumechiCode() {
+function compileYumechiCode(): never {
     throw new ConfigError('dame dame yumechi SDK');
 }
 
