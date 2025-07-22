@@ -1,17 +1,17 @@
 <html>
 <head>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     
-    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
 
 <div id="page_header">
     <div class="container">
-        <div class="alert alert-dismissible alert-info">
+        <div class="alert alert-info">
             <h1 class="display-3">{{ message }}</h1>
             <p class="lead">使用例：上のテキストエリアに下記のCSVを貼ってみてください</p>
             <pre>管理番号,メールアドレス,日付
@@ -28,42 +28,46 @@
 </div>
 
 <div id="page_content">
-  <div class="panel panel-primary">
-        <div class="panel-heading">
+  <div class="card border-primary">
+        <div class="card-header bg-primary text-white">
             <h2>変換前のCSVデータ（カンマ区切り）</h2>
-            <p class="lead">insert以外は実装中です…</p>
+            <p class="lead mb-0">insert以外は実装中です…</p>
         </div>
-        <div class="panel-body">
-            <div class="form-group">
-                <div class="form-inline">
-                    <label>テーブル名</label>
-                    <input class="form-control" type="text" value="table_name" id="table_name">
-                    <label>出力タイプ</label>
-                    <select class="form-control" id="create_type" v-model="create_type">
-                        <option value="select">select（仕様固まってない）</option>
-                        <option value="update">update（仕様固まってない）</option>
-                        <option value="insert">insert</option>
-                        <option value="delete">delete（未実装）</option>
-                    </select>
-               </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">テーブル名</label>
+                        <input class="form-control" type="text" value="table_name" id="table_name">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">出力タイプ</label>
+                        <select class="form-control" id="create_type" v-model="create_type">
+                            <option value="select">select（仕様固まってない）</option>
+                            <option value="update">update（仕様固まってない）</option>
+                            <option value="insert">insert</option>
+                            <option value="delete">delete（未実装）</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <textarea class="form-control" id="csv_data" rows="5" placeholder="SQLに変換したいCSVデータをココに入れる"></textarea>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <a class="btn btn-primary btn-lg" id="convert_button" @click="convert">変換！</a>
             </div>
         </div>
     </div>
-    <div class="panel" :class="result_panel_label">
-        <div class="panel-heading">
+    <div class="card mt-3" :class="result_panel_label">
+        <div class="card-header">
           <h2>変換結果</h2>
         </div>
-        <div class="panel-body">
-            <div class="form-group">
+        <div class="card-body">
+            <div class="mb-3">
                 <textarea class="form-control" id="result_data" rows="5" placeholder="">{{ result }}</textarea>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <a class="btn btn-lg" :class="result_button_class" id="clip_board_button" @click="copy_clipboard">クリップボードにコピー</a>
             </div>
         </div>
@@ -71,20 +75,25 @@
 </div>
   
 <script type="text/javascript">
-    var app = new Vue({
-        el: "#page_header",
-        data: {
-            message: "CSVデータからSQLのINSERT文を自動的につくる"
+    const { createApp } = Vue;
+    
+    const app = createApp({
+        data() {
+            return {
+                message: "CSVデータからSQLのINSERT文を自動的につくる"
+            }
         }
     });
+    app.mount("#page_header");
 
-    var app2 = new Vue({
-        el: "#page_content",
-        data: {
-          create_type: "insert",
-          result: "",
-          result_panel_label: "panel-success",
-          result_button_class: "btn-primary disabled",
+    const app2 = createApp({
+        data() {
+            return {
+                create_type: "insert",
+                result: "",
+                result_panel_label: "border-success",
+                result_button_class: "btn-primary disabled"
+            }
         },
         methods: {
             convert: function() {
@@ -109,7 +118,7 @@
                         if(createType == "select") {
                             var sql_result = createSQL(header);
                             output += sql_result[1]
-                            this.result_panel_label = "panel-success"
+                            this.result_panel_label = "border-success"
                             this.result_button_class = "btn-success"
                             break                          
                         }
@@ -130,17 +139,17 @@
                 }
 
                 if(isError) {
-                    this.result_panel_label = "panel-danger"
+                    this.result_panel_label = "border-danger"
                     this.result_button_class = "btn-danger disabled"
                     alert(errorMessage)
                     this.result = ""
                     return
                 } else {
                     if(isWarning) {
-                        this.result_panel_label = "panel-warning"
+                        this.result_panel_label = "border-warning"
                         this.result_button_class = "btn-warning"
                     } else {
-                        this.result_panel_label = "panel-success"
+                        this.result_panel_label = "border-success"
                         this.result_button_class = "btn-success"
                     }
         
@@ -187,6 +196,7 @@
             }
         }
     });
+    app2.mount("#page_content");
 </script>
 
 </body>
