@@ -1,3 +1,0 @@
-[submodule "chrome_plugin_practice/slack_emoji_downloader"]
-	path = chrome_plugin_practice/slack_emoji_downloader
-	url = https://github.com/yumechi/slack_emoji_downloader
